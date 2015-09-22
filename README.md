@@ -23,3 +23,8 @@ installation:
 7. add keyboard-shortcut  command: [/usr/local/bin/screenrotation.sh -key] 
    for lenovo yoga 3 11 you can take Super+O. thats the extra button on the right-hand side, originaly intended 
    to lock automatic screen rotation 
+
+
+based on:
+http://askubuntu.com/questions/405628/touchscreen-input-doesnt-rotate-lenovo-yoga-13-yoga-2-pro
+https://gist.github.com/rubo77/daa262e0229f6e398766
