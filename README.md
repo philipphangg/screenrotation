@@ -26,6 +26,10 @@ installation:
    to lock automatic screen rotation 
 
 
+blog article (german):                                                                                          
+http://hangg.com/2015/09/ubuntu-screen-rotation-indicator-fuer-lenovo-yoga-3-11/
+
 based on:                                                                                                          
 http://askubuntu.com/questions/405628/touchscreen-input-doesnt-rotate-lenovo-yoga-13-yoga-2-pro
 https://gist.github.com/rubo77/daa262e0229f6e398766
+
