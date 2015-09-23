@@ -2,6 +2,7 @@
 ubuntu unity indicator to rotate the screen for convertibles (like lenovo yoga)
 
 installation:
+
 1. download file from github and unzip
 
 2. open terminal and cd to file
