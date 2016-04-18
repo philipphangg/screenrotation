@@ -116,7 +116,7 @@ else
   echo "laptop-mode"
   xrandr -o normal
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $normal
-  xinput enable "$TouchpadDevice"
+  synclient TouchpadOff=0
   if [[ -n $isOnboardRunning ]]; then
      killall onboard
   fi
