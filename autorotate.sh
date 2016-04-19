@@ -8,6 +8,7 @@
 # (does not work for Ubuntu previous versions)
 #
 # IMPORTANT: this script should never be killed and restarted,
+# (unles when suspending and resuming)
 # otherwise for some reason the kernel module may hang
 
 echo "Autorotate" > $HOME/.screen_orientation
