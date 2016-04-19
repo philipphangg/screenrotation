@@ -13,15 +13,17 @@ installation:
 3. copy screenrotation.svg to /usr/share/pixmaps/                                                              
 ~$ sudo cp ./screenrotation.svg /usr/share/pixmaps/
 
-4. copy autorotate.sh, screenrotation.sh and screenrotation-indicator.py to /usr/local/bin/                                       
-~$ sudo cp ./autorotate.sh /usr/local/bin                                                                    
-~$ sudo cp ./screenrotation.sh /usr/local/bin                                                                    
+4. copy executables to the right directories (please note that first you have to change $USER to your actual user name in 99_restart_autorotate 
+~$ sudo cp ./autorotate.sh /usr/local/bin
+~$ sudo cp ./screenrotation.sh /usr/local/bin
 ~$ sudo cp ./screenrotation-indicator.py /usr/local/bin
+~$ sudo cp ./99_restart_autorotate /lib/systemd/system-sleep/
 
 5. make all files executable                                                                                     
 ~$ sudo chmod +x /usr/local/bin/autorotate.sh
 ~$ sudo chmod +x /usr/local/bin/screenrotation-indicator.py                                              
 ~$ sudo chmod +x /usr/local/bin/screenrotation.sh
+~$ sudo chmod a+x /lib/systemd/system-sleep/99_restart_autorotate
 
 6. add screenrotation-indicator.py, autorotate.sh as startup programs                                                          
 
