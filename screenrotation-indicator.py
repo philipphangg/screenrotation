@@ -8,6 +8,10 @@ from gi.repository import Notify as notify
 
 APPINDICATOR_ID = 'screenrotationindicator'
 
+menu_items = {}
+
+os.system('echo "Autorotate" > $HOME/.screen_orientation')
+
 def main():
     indicator = appindicator.Indicator.new(APPINDICATOR_ID, '/usr/share/pixmaps/screenrotation.svg', appindicator.IndicatorCategory.SYSTEM_SERVICES)
     indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
@@ -16,61 +20,37 @@ def main():
     gtk.main()
 
 def build_menu():
-	menu = gtk.Menu()	
-	#laptop-mode
-	item_laptop_mode = gtk.MenuItem('Laptop-Mode')
-	item_laptop_mode.connect('activate', laptopmode)
-	menu.append(item_laptop_mode)
-	#stand-mode
-	item_stand_mode = gtk.MenuItem('Stand-Mode')
-	item_stand_mode.connect('activate', standmode)
-	menu.append(item_stand_mode)
-	#tablet-mode
-	item_tablet_mode = gtk.MenuItem('Tablet-Mode')
-	item_tablet_mode.connect('activate', tabletmode)
-	menu.append(item_tablet_mode)
-	#tablet-left-mode
-	item_tablet_left_mode = gtk.MenuItem('Tablet-Left-Mode')
-	item_tablet_left_mode.connect('activate', tabletleftmode)
-	menu.append(item_tablet_left_mode)
-	#tablet-right-mode
-	item_tablet_right_mode = gtk.MenuItem('Tablet-Right-Mode')
-	item_tablet_right_mode.connect('activate', tabletrightmode)
-	menu.append(item_tablet_right_mode)
-	# quit
-	item_quit = gtk.MenuItem('Quit')
-	item_quit.connect('activate', quit)
-	menu.append(item_quit)
-	menu.show_all()
-	return menu
+   global menu_items
+   menu = gtk.Menu()
+   group = []
+   menu_arr = [
+      'Autorotate', 'Laptop-Mode', 'Stand-Mode', 
+      'Tablet-Mode', 'Tablet-Left-Mode', 'Tablet-Right-Mode'
+   ]
+   for i in range(len(menu_arr)):
+      menu_item = gtk.RadioMenuItem.new_with_label(group, menu_arr[i])
+      group = menu_item.get_group()
+      menu_items[menu_arr[i]] = menu_item      
+      menu.append(menu_item)
+      menu_item.connect("activate", on_menu_select, menu_arr[i])
+   
+   # quit
+   item_quit = gtk.MenuItem('Quit')
+   item_quit.connect('activate', quit)
+   menu.append(item_quit)
+   menu.show_all()
+   return menu
 
-# laptopmode funktion
-def laptopmode(_):
-    notify.Notification.new("Laptop-Mode", None).show()
-    os.system('screenrotation.sh -l')
 
-# standmode funktion
-def standmode(_):
-    notify.Notification.new("Stand-Mode", None).show()
-    os.system('screenrotation.sh -s')    
+def on_menu_select(obj, label):
+   global menu_items
+   if menu_items[label].get_active():
+      notify.Notification.new(label, None).show()
+      os.system('echo "'+label+'" > $HOME/.screen_orientation')
 
-# ltabletmode funktion
-def tabletmode(_):
-    notify.Notification.new("Tablet-Mode", None).show()
-    os.system('screenrotation.sh -t')
-
-# tabletleftmode funktion
-def tabletleftmode(_):
-    notify.Notification.new("Tablet-Left-Mode", None).show()
-    os.system('screenrotation.sh -tl')
-
-# tabletrightmode funktion
-def tabletrightmode(_):
-    notify.Notification.new("Tablet-Right-Mode", None).show()
-    os.system('screenrotation.sh -tr')
-
-# quit funktion
+# quit function
 def quit(_):
+	os.system('echo "laptop" > $HOME/.screen_orientation')
 	notify.uninit() 
 	gtk.main_quit()
 

@@ -7,7 +7,6 @@
 #### configuration
 # find your Touchscreen and Touchpad device with the command `xinput`
 TouchscreenDevice='ELAN Touchscreen'
-TouchpadDevice='SYNA2B23:00 06CB:2714'
 
 if [ "$1" = "--help"  ] || [ "$1" = "-h"  ] ; then
 echo 'Usage: screenrotation.sh [OPTION]'
@@ -26,7 +25,6 @@ echo ' -key tablet-left-mode (set keyboard shortcut): screen 90° left, touchpad
 exit 0
 fi
 
-touchpadEnabled=$(xinput --list-props "$TouchpadDevice" | awk '/Device Enabled/{print $NF}')
 screenMatrix=$(xinput --list-props "$TouchscreenDevice" | awk '/Coordinate Transformation Matrix/{print $5$6$7$8$9$10$11$12$NF}')
 
 # Matrix for rotation
@@ -58,53 +56,68 @@ left_float='0.000000,-1.000000,1.000000,1.000000,0.000000,0.000000,0.000000,0.00
 #⎣  0 0 1 ⎦
 right='0 1 0 -1 0 1 0 0 1'
 
+isOnboardRunning=`ps -A | grep onboard`
 
 if [ "$1" == "-l" ]
 then
   echo "laptop-mode"
   xrandr -o normal
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $normal
-  xinput enable "$TouchpadDevice"
-  killall onboard
+  synclient TouchpadOff=0
+  if [[ -n $isOnboardRunning ]]; then
+     killall onboard
+  fi
 elif [ "$1" == "-s" ]
 then
   echo "stand-mode"
   xrandr -o inverted
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $inverted
-  xinput disable "$TouchpadDevice"
-  onboard &
+  synclient TouchpadOff=1
+  if [[ -z $isOnboardRunning ]]; then
+     onboard &
+  fi
 elif [ "$1" == "-t" ]
 then
   echo "tablet-mode"
   xrandr -o normal
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $normal
-  xinput disable "$TouchpadDevice"
-  onboard &
+  synclient TouchpadOff=1
+  if [[ -z $isOnboardRunning ]]; then
+     onboard &
+  fi
 elif [ "$1" == "-tl" ]
 then
   echo "left-mode"
   xrandr -o left
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $left
-  xinput disable "$TouchpadDevice"
-  onboard &
+  synclient TouchpadOff=1
+  if [[ -z $isOnboardRunning ]]; then
+     onboard &
+  fi
 elif [ "$1" == "-tr" ]
 then
   echo "right-mode"
   xrandr -o right
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $right
-  xinput disable "$TouchpadDevice"
-  onboard &
+  synclient TouchpadOff=1
+  if [[ -z $isOnboardRunning ]]; then
+     onboard &
+  fi
 elif [ $screenMatrix == $normal_float ] && [ "$1" == "-key" ]
 then
   echo "left-mode"
   xrandr -o left
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $left
-  xinput disable "$TouchpadDevice"
-  onboard &
+  synclient TouchpadOff=1
+  if [[ -z $isOnboardRunning ]]; then
+     onboard &
+  fi
 else
   echo "laptop-mode"
   xrandr -o normal
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $normal
-  xinput enable "$TouchpadDevice"
-  killall onboard
+  synclient TouchpadOff=0
+  if [[ -n $isOnboardRunning ]]; then
+     killall onboard
+  fi
 fi
