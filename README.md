@@ -31,6 +31,14 @@ installation:
    for lenovo yoga 3 11 you can take Super+O. thats the extra button on the right-hand side, originaly intended 
    to lock automatic screen rotation 
 
+8. edit sudoers file to allow the use of sudo without password for the rmmod and modprobe commands
+
+sudo visudo
+
+add the following lines:
+%sudo ALL=(ALL:ALL) NOPASSWD: /sbin/rmmod
+%sudo ALL=(ALL:ALL) NOPASSWD: /sbin/modprobe
+
 
 blog article (german):                                                                                          
 http://hangg.com/2015/09/ubuntu-screen-rotation-indicator-fuer-lenovo-yoga-3-11/
