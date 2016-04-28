@@ -9,40 +9,49 @@ installation:
 1. download file from github and unzip
 
 2. open terminal and cd to file  
-~$ cd /path/to/screenrotation/
+*~$ cd /path/to/screenrotation/*
 
 3. copy screenrotation.svg to /usr/share/pixmaps/  
-~$ sudo cp ./screenrotation.svg /usr/share/pixmaps/
+*~$ sudo cp ./screenrotation.svg /usr/share/pixmaps/*
 
 4. copy executables to the right directories (please note that first you have to change $USER to your actual user name in 99_restart_autorotate  
-~$ sudo cp ./autorotate.sh /usr/local/bin  
+*~$ sudo cp ./autorotate.sh /usr/local/bin  
 ~$ sudo cp ./screenrotation.sh /usr/local/bin  
 ~$ sudo cp ./screenrotation-indicator.py /usr/local/bin  
 ~$ sudo cp ./set_scale.sh /usr/local/bin  
-~$ sudo cp ./99_restart_autorotate /lib/systemd/system-sleep/  
+~$ sudo cp ./99_restart_autorotate /lib/systemd/system-sleep/*  
 
 5. make all files executable  
-~$ sudo chmod +x /usr/local/bin/autorotate.sh
+*~$ sudo chmod +x /usr/local/bin/autorotate.sh
 ~$ sudo chmod +x /usr/local/bin/screenrotation-indicator.py
 ~$ sudo chmod +x /usr/local/bin/screenrotation.sh
 ~$ sudo chmod +x /usr/local/bin/set_scale.sh
-~$ sudo chmod a+x /lib/systemd/system-sleep/99_restart_autorotate
+~$ sudo chmod a+x /lib/systemd/system-sleep/99_restart_autorotate*
 
-6. add screenrotation-indicator.py and autorotate.sh as startup programs
+6. edit sudoers file to allow the use of sudo without password for the rmmod and modprobe commands  
+*~$ sudo visudo*  
+add the following lines:  
+*%sudo ALL=(ALL:ALL) NOPASSWD: /sbin/rmmod  
+%sudo ALL=(ALL:ALL) NOPASSWD: /sbin/modprobe*  
 
-7. add keyboard-shortcut  command: [/usr/local/bin/screenrotation.sh -key]  
+7. edit blacklist.conf to <u>avoid loading of sensor kernel module at startup</u> (70% of the times it hangs, we will load it later with autorotate.sh)  
+*~$ sudo nano /etc/modprobe.d/blacklist.conf*  
+add the following line at the end:  
+*blacklist hid_sensor_hub*
+
+8. add screenrotation-indicator.py and autorotate.sh as startup programs
+
+9. add keyboard-shortcut  command: [/usr/local/bin/screenrotation.sh -key]  
    for lenovo yoga 3 11 you can take Super+O. thats the extra button on the right-hand side, originaly intended to lock automatic screen rotation
 
-8. edit sudoers file to allow the use of sudo without password for the rmmod and modprobe commands  
-~$ sudo visudo  
-add the following lines:  
-%sudo ALL=(ALL:ALL) NOPASSWD: /sbin/rmmod  
-%sudo ALL=(ALL:ALL) NOPASSWD: /sbin/modprobe  
 
-9. edit blacklist.conf to avoid loading of sensor kernel module at startup (70% of the times it hangs, we will load it later with autorotate.sh)  
-~$ sudo nano /etc/modprobe.d/blacklist.conf  
-add the following line at the end:  
-blacklist hid_sensor_hub
+**Some footnotes:**  
+
+* <u>sleep times in autorotate.sh are necessary</u>, otherwise the sensor kernel module may hang or crash the system
+
+* <u>autorotate.sh needs to be killed before suspend and restarted after resume</u> otherwise it may hang, so the script  99_restart_autorotate is necessary
+
+* <u>it is necessary to put gsettings command in a separate script (set_scale.sh)</u>, otherwise it does not work after suspend/resume (gsettings does not work if called with su, so we cannot put it in autorotate.sh, which is restarted after resume with "su $USER -c autorotate.sh" in the 99_restart_autorotate script)
 
 
 blog article (german):                                                                                          
