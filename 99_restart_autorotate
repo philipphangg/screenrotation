@@ -2,7 +2,7 @@
 case $1/$2 in
   pre/*)
     echo "Going to $2..."
-    su alberto -c "killall autorotate.sh"
+    su $USER -c "killall autorotate.sh"
     exit 0
     ;;
   post/*)
