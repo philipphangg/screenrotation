@@ -7,11 +7,15 @@
 # Works for Lenovo Yoga 3 11, Ubuntu 16.04 (tested on 64bit version)
 # (does not work for Ubuntu previous versions)
 
+   sleep 8
+   sudo modprobe hid_sensor_hub
+   sleep 5
+
 function restartSensorModules
 {
-   rmmod hid_sensor_gyro_3d hid_sensor_incl_3d hid_sensor_accel_3d hid_sensor_rotation hid_sensor_als hid_sensor_magn_3d hid_sensor_trigger hid_sensor_iio_common hid_sensor_custom hid_sensor_hub
+   sudo rmmod hid_sensor_gyro_3d hid_sensor_incl_3d hid_sensor_accel_3d hid_sensor_rotation hid_sensor_als hid_sensor_magn_3d hid_sensor_trigger hid_sensor_iio_common hid_sensor_custom hid_sensor_hub
    sleep 1
-   modprobe hid_sensor_hub
+   sudo modprobe hid_sensor_hub
 }
 
 echo "Autorotate" > $HOME/.screen_orientation
@@ -46,6 +50,8 @@ function increaseCounter
 }
  
 sleep 1
+
+zenity --info --text="starting screen autorotation service" &
  
 while true; do
  

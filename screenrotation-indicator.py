@@ -11,6 +11,7 @@ APPINDICATOR_ID = 'screenrotationindicator'
 menu_items = {}
 
 os.system('echo "Autorotate" > $HOME/.screen_orientation')
+os.system('set_scale.sh &')
 
 def main():
     indicator = appindicator.Indicator.new(APPINDICATOR_ID, '/usr/share/pixmaps/screenrotation.svg', appindicator.IndicatorCategory.SYSTEM_SERVICES)
