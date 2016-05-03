@@ -17,7 +17,7 @@ installation:
 3. **copy screenrotation.svg to /usr/share/pixmaps/**  
 ~$ sudo cp ./screenrotation.svg /usr/share/pixmaps/
 
-4. **copy configuration files**
+4. **copy configuration files**  
 ~$ sudo mkdir -p /etc/lightdm/lightdm.conf.d  
 ~$ sudo cp autorotate-lightdm.conf /etc/lightdm/lightdm.conf.d  
 ~$ sudo cp blacklist-sensor.conf /etc/modprobe.d
