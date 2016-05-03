@@ -9,21 +9,15 @@
 
 function set_screen
 {
-   isOnboardRunning=`ps -A | grep onboard`
+   tmpdir="/tmp/screen_management"
    case "$1" in
         normal)
            synclient TouchpadOff=0
-           if [[ -n $isOnboardRunning ]]; then
-              killall onboard
-           fi
-           echo "normal" > $HOME/.screen_scale
+           echo "normal" > $tmpdir/screen_scale
            ;;
         touchscreen)
            synclient TouchpadOff=1
-           if [[ -z $isOnboardRunning ]]; then
-              onboard &
-           fi
-           echo "touchscreen" > $HOME/.screen_scale
+           echo "touchscreen" > $tmpdir/screen_scale
            ;; 
    esac
 }
