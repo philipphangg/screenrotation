@@ -9,35 +9,34 @@ Until this problem will be fixed, these scripts take care of rebooting the syste
 
 installation:
 
-1. download file from github and unzip
+1. **download file from github and unzip**
 
-2. open terminal and cd to directory  
-*~$ cd /path/to/screenrotation/*
+2. **open terminal and cd to directory**  
+~$ cd /path/to/screenrotation/
 
-3. copy screenrotation.svg to /usr/share/pixmaps/  
-*~$ sudo cp ./screenrotation.svg /usr/share/pixmaps/*
+3. **copy screenrotation.svg to /usr/share/pixmaps/**  
+~$ sudo cp ./screenrotation.svg /usr/share/pixmaps/
 
-4. copy configuration files  
-*~$ sudo mkdir -p /etc/lightdm/lightdm.conf.d  
+4. **copy configuration files**
+~$ sudo mkdir -p /etc/lightdm/lightdm.conf.d  
 ~$ sudo cp autorotate-lightdm.conf /etc/lightdm/lightdm.conf.d  
 ~$ sudo cp blacklist-sensor.conf /etc/modprobe.d
-*
 
-5. copy executables to the right directories  
-*~$ sudo cp ./autorotate.sh /usr/local/bin  
+5. **copy executables to the right directories**  
+~$ sudo cp ./autorotate.sh /usr/local/bin  
 ~$ sudo cp ./accessibility_fix.sh /usr/local/bin  
 ~$ sudo cp ./screenrotation.sh /usr/local/bin  
 ~$ sudo cp ./screenrotation-indicator.py /usr/local/bin  
 ~$ sudo cp ./set_scale.sh /usr/local/bin  
-~$ sudo cp ./99_restart_autorotate /lib/systemd/system-sleep/*  
+~$ sudo cp ./99_restart_autorotate /lib/systemd/system-sleep
 
-6. make all files executable  
-*~$ sudo chmod +x /usr/local/bin/\*  
-~$ sudo chmod a+x /lib/systemd/system-sleep/99_restart_autorotate*
+6. **make all files executable**  
+~$ sudo chmod +x /usr/local/bin/*  
+~$ sudo chmod a+x /lib/systemd/system-sleep/99_restart_autorotate
 
-7. add screenrotation-indicator.py as startup program
+7. **add screenrotation-indicator.py as startup program**
 
-8. add keyboard-shortcut  command: [/usr/local/bin/screenrotation.sh -key]  
+8. **add keyboard-shortcut**  command: [/usr/local/bin/screenrotation.sh -key]  
    for lenovo yoga 3 11 you can take Super+O. thats the extra button on the right-hand side, originaly intended to lock automatic screen rotation
 
 
@@ -46,11 +45,11 @@ installation:
 * at the end of a cold boot, when you see the dialog box, you have to click on "Reboot"; at the end of the reboot process, you have instead to click on "Proceed"
 * in this way, the accelerometer kernel module is fairly stable, and almost never crashes (if it happens, the autorotate script displays a notificaton)
 
-** Onboard tweaks **  
+**Onboard tweaks**  
   
 note: enabling tooltips is required to have the close ("x") button in the "Small" layout
 
-*gsettings set org.onboard layout /usr/share/onboard/layouts/Small.onboard  
+gsettings set org.onboard layout /usr/share/onboard/layouts/Small.onboard  
 gsettings set org.onboard show-tooltips true  
 gsettings set org.onboard.auto-show enabled true  
 gsettings set org.onboard.auto-show hide-on-key-press true  
@@ -60,7 +59,7 @@ gsettings set org.onboard.window force-to-top true
 gsettings set org.onboard.window.landscape dock-expand true
 gsettings set org.onboard.window.portrait dock-expand true
 gsettings set org.onboard.window.landscape dock-height 405  
-gsettings set org.onboard.window.portrait dock-height 405*  
+gsettings set org.onboard.window.portrait dock-height 405
 
 Enjoy!
   
