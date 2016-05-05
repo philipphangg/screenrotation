@@ -56,10 +56,10 @@ gsettings set org.onboard.auto-show hide-on-key-press true
 gsettings set org.onboard.window docking-enabled true  
 gsettings set org.onboard.window docking-shrink-workarea true  
 gsettings set org.onboard.window force-to-top true  
-gsettings set org.onboard.window.landscape dock-expand true
-gsettings set org.onboard.window.portrait dock-expand true
+gsettings set org.onboard.window.landscape dock-expand true  
+gsettings set org.onboard.window.portrait dock-expand true  
 gsettings set org.onboard.window.landscape dock-height 405  
-gsettings set org.onboard.window.portrait dock-height 405
+gsettings set org.onboard.window.portrait dock-height 405  
 
 Enjoy!
   
