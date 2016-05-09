@@ -6,6 +6,24 @@
 
 #### configuration
 # find your Touchscreen and Touchpad device with the command `xinput`
+
+function set_screen
+{
+   tmpdir="/tmp/screen_management"
+   case "$1" in
+        normal)
+           synclient TouchpadOff=0
+           echo "normal" > $tmpdir/screen_scale
+           ;;
+        touchscreen)
+           synclient TouchpadOff=1
+           echo "touchscreen" > $tmpdir/screen_scale
+           ;; 
+   esac
+}
+
+
+
 TouchscreenDevice='ELAN Touchscreen'
 
 if [ "$1" = "--help"  ] || [ "$1" = "-h"  ] ; then
@@ -58,66 +76,53 @@ right='0 1 0 -1 0 1 0 0 1'
 
 isOnboardRunning=`ps -A | grep onboard`
 
+
 if [ "$1" == "-l" ]
 then
   echo "laptop-mode"
   xrandr -o normal
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $normal
-  synclient TouchpadOff=0
-  if [[ -n $isOnboardRunning ]]; then
-     killall onboard
-  fi
+  set_screen normal
+
 elif [ "$1" == "-s" ]
 then
   echo "stand-mode"
   xrandr -o inverted
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $inverted
-  synclient TouchpadOff=1
-  if [[ -z $isOnboardRunning ]]; then
-     onboard &
-  fi
+  set_screen touchscreen
+
 elif [ "$1" == "-t" ]
 then
   echo "tablet-mode"
   xrandr -o normal
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $normal
-  synclient TouchpadOff=1
-  if [[ -z $isOnboardRunning ]]; then
-     onboard &
-  fi
+  set_screen touchscreen
+
 elif [ "$1" == "-tl" ]
 then
   echo "left-mode"
   xrandr -o left
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $left
-  synclient TouchpadOff=1
-  if [[ -z $isOnboardRunning ]]; then
-     onboard &
-  fi
+  set_screen touchscreen
+
 elif [ "$1" == "-tr" ]
 then
   echo "right-mode"
   xrandr -o right
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $right
-  synclient TouchpadOff=1
-  if [[ -z $isOnboardRunning ]]; then
-     onboard &
-  fi
+  set_screen touchscreen
+
 elif [ $screenMatrix == $normal_float ] && [ "$1" == "-key" ]
 then
   echo "left-mode"
   xrandr -o left
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $left
-  synclient TouchpadOff=1
-  if [[ -z $isOnboardRunning ]]; then
-     onboard &
-  fi
+  set_screen touchscreen
+
 else
   echo "laptop-mode"
   xrandr -o normal
   xinput set-prop "$TouchscreenDevice" 'Coordinate Transformation Matrix' $normal
-  synclient TouchpadOff=0
-  if [[ -n $isOnboardRunning ]]; then
-     killall onboard
-  fi
+  set_screen normal
+
 fi

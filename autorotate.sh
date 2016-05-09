@@ -4,29 +4,24 @@
 #
 # based on: http://pastebin.com/742KTaS6
 #
-# Works for Lenovo Yoga 3 11, Ubuntu 16.04 (tested on 64bit version)
+# Tested on Lenovo Yoga 3 11, Ubuntu 16.04 (64bit)
 # (does not work for Ubuntu previous versions)
-#
-# IMPORTANT: this script should never be killed and restarted,
-# (unles when suspending and resuming)
-# otherwise for some reason the kernel module may hang
 
-echo "Autorotate" > $HOME/.screen_orientation
+function zenityNotification
+{
+   echo "message:$1" | zenity --notification --listen &
+   mypid=$!
+   sleep 0.5
+   kill $mypid
+}
 
-xpath=`find /sys/devices/pci0000:00 | grep in_accel_x_raw`
-ypath=`find /sys/devices/pci0000:00 | grep in_accel_y_raw`
+function restartSensorModules
+{
+   rmmod hid_sensor_gyro_3d hid_sensor_incl_3d hid_sensor_accel_3d hid_sensor_rotation hid_sensor_als hid_sensor_magn_3d hid_sensor_trigger hid_sensor_iio_common hid_sensor_custom hid_sensor_hub
+   sleep 1
+   modprobe hid_sensor_hub
+}
 
-if [[ -z $xpath ]]; then
-  zenity --error --text="ERROR: accelerometer not detected by linux kernel"
-  exit 1
-fi
-
-
-current_case=0
-counter=0
-num_iterations=2
-max_iterations=4
- 
 function increaseCounter
 {
     c=$1
@@ -37,14 +32,41 @@ function increaseCounter
         counter=1
     fi
 }
+
+
+export DISPLAY=":0.0"
+xhost local:root
+
+tmpdir="/tmp/screen_management"
+
+xpath=`find /sys/devices/pci0000:00 | grep in_accel_x_raw`
+
+if [[ -z $xpath ]]; then
+  restartSensorModules
+  xpath=`find /sys/devices/pci0000:00 | grep in_accel_x_raw`
+  if [[ -z $xpath ]]; then
+     zenityNotification "ERROR: accelerometer not detected by linux kernel"
+     exit 1
+  fi
+fi
+
+ypath=`find /sys/devices/pci0000:00 | grep in_accel_y_raw`
+
+
+current_case=0
+counter=0
+num_iterations=2
+max_iterations=4
  
 sleep 1
+
+zenityNotification "screen autorotation service started"
  
 while true; do
  
   HDMIConn=`xrandr --query | grep "HDMI1 connected"`
   if [[ $HDMIConn ]]; then
-      #echo -en "\rHDMI connected, no rotation";
+      #HDMI connected, no rotation
       HDMIConn=""
       continue
   fi 
@@ -52,15 +74,18 @@ while true; do
   response_time=`/usr/bin/time -f "%e" cat "$xpath" 2>&1 | sed -n 2p`
 
   if (( `echo "$response_time > 1" | bc -l` )); then
-    zenity --error --text="ERROR: accelerometer kernel module hanging, please restart computer"
-    exit 1
+    restartSensorModules
+    xpath=`find /sys/devices/pci0000:00 | grep in_accel_x_raw`
+    if [[ -z $xpath ]]; then
+      zenityNotification "ERROR: accelerometer kernel module not working\nscreen autorotate cannot work"
+      exit 1
+    fi    
   fi
 
   x=`cat "$xpath"`
   y=`cat "$ypath"`
+  o=`cat $tmpdir/screen_orientation`
 
-
-  o=`cat $HOME/.screen_orientation`
 
 
     if [[ ($x -gt 65400 && $y -gt 50000 && $o == "Autorotate") || $o == "Laptop-Mode" ]]; then

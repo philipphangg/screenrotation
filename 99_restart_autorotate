@@ -2,13 +2,14 @@
 case $1/$2 in
   pre/*)
     echo "Going to $2..."
-    su $USER -c "killall autorotate.sh"
+    killall autorotate.sh
     exit 0
     ;;
   post/*)
     echo "Waking up from $2..."
-        DISPLAY=:0.0 ; export DISPLAY
-        su $USER -c "sleep 5; autorotate.sh &"
+        killall autorotate.sh
+        sleep 3
+        su root -c "autorotate.sh > /tmp/autorotate.log 2>&1 &"
     ;;
 esac
 

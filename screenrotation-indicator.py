@@ -10,7 +10,9 @@ APPINDICATOR_ID = 'screenrotationindicator'
 
 menu_items = {}
 
-os.system('echo "Autorotate" > $HOME/.screen_orientation')
+os.system('echo "Autorotate" > /tmp/screen_management/screen_orientation')
+os.system('killall set_scale.sh; set_scale.sh &')
+
 
 def main():
     indicator = appindicator.Indicator.new(APPINDICATOR_ID, '/usr/share/pixmaps/screenrotation.svg', appindicator.IndicatorCategory.SYSTEM_SERVICES)
@@ -46,11 +48,11 @@ def on_menu_select(obj, label):
    global menu_items
    if menu_items[label].get_active():
       notify.Notification.new(label, None).show()
-      os.system('echo "'+label+'" > $HOME/.screen_orientation')
+      os.system('echo "'+label+'" > /tmp/screen_management/screen_orientation')
 
 # quit function
 def quit(_):
-	os.system('echo "laptop" > $HOME/.screen_orientation')
+	os.system('echo "Laptop-Mode" > /tmp/screen_management/screen_orientation')
 	notify.uninit() 
 	gtk.main_quit()
 
