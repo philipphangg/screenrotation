@@ -12,6 +12,7 @@ menu_items = {}
 
 os.system('echo "Autorotate" > /tmp/screen_management/screen_orientation')
 os.system('killall set_scale.sh; set_scale.sh &')
+os.system('screenrotation_mod_moz_prefs.sh')
 
 def main():
     indicator = appindicator.Indicator.new(APPINDICATOR_ID, '/usr/share/pixmaps/screenrotation.svg', appindicator.IndicatorCategory.SYSTEM_SERVICES)
