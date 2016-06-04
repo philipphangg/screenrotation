@@ -8,6 +8,8 @@
 #
 # See:
 #
+# https://support.mozilla.org/en-US/questions/963759
+#
 # http://askubuntu.com/questions/313483/how-do-i-change-firefoxs-aboutconfig-from-a-shell-script
 # (but the file is not user.js but prefs.js)
 #
