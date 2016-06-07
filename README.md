@@ -30,6 +30,7 @@ installation:
 ~$ sudo cp ./screenrotation.sh /usr/local/bin  
 ~$ sudo cp ./screenrotation-indicator.py /usr/local/bin  
 ~$ sudo cp ./set_scale.sh /usr/local/bin  
+~$ sudo cp ./screenrotation_mod_moz_prefs.sh /usr/local/bin  
 ~$ sudo cp ./99_restart_autorotate /lib/systemd/system-sleep
 
 6. **make all files executable**  
