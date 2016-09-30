@@ -27,7 +27,8 @@ installation:
 5. **copy executables to the right directories**  
 ~$ sudo cp ./autorotate.sh /usr/local/bin  
 ~$ sudo cp ./accessibility_fix.sh /usr/local/bin  
-~$ sudo cp ./screenrotation.sh /usr/local/bin  
+~$ sudo cp ./screenrotation.sh /usr/local/bin 
+~$ sudo cp ./start_autorotate.sh /usr/local/bin
 ~$ sudo cp ./screenrotation-indicator.py /usr/local/bin  
 ~$ sudo cp ./set_scale.sh /usr/local/bin  
 ~$ sudo cp ./screenrotation_mod_moz_prefs.sh /usr/local/bin  
